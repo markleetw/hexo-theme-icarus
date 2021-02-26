@@ -167,6 +167,7 @@ module.exports = class extends Component {
 
             {adsenseClientId ? <script data-ad-client={adsenseClientId}
                 src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" async></script> : null}
+            {!helper.is_post() ? <h1 style="display: none">{page.title || config.title}</h1> : null}
         </head>;
     }
 };
