@@ -5,7 +5,12 @@ const OpenGraph = require('hexo-component-inferno/lib/view/misc/open_graph');
 const StructuredData = require('hexo-component-inferno/lib/view/misc/structured_data');
 const Plugins = require('./plugins');
 
-function getPageTitle(page, siteTitle, helper) {
+function getPageTitle(page, siteTitle, siteSubtitle, helper) {
+
+    if (helper.is_home()) {
+        return siteTitle + ' - ' + siteSubtitle;
+    }
+
     let title = page.title;
 
     if (helper.is_archive()) {
@@ -112,7 +117,7 @@ module.exports = class extends Component {
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
             {meta && meta.length ? <MetaTags meta={meta} /> : null}
 
-            <title>{getPageTitle(page, config.title, helper)}</title>
+            <title>{getPageTitle(page, config.title, config.subtitle, helper)}</title>
 
             <WebApp.Cacheable
                 helper={helper}
