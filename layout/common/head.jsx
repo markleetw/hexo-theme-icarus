@@ -8,7 +8,7 @@ const Plugins = require('./plugins');
 function getPageTitle(page, siteTitle, siteSubtitle, helper) {
 
     if (helper.is_home()) {
-        return siteTitle + ' - ' + siteSubtitle;
+        return [siteTitle, siteSubtitle].filter(str => typeof str !== 'undefined' && str.trim() !== '').join (' - ');
     }
 
     let title = page.title;
@@ -112,12 +112,14 @@ module.exports = class extends Component {
             structuredImages = page.photos;
         }
 
+        let title = getPageTitle(page, config.title, config.subtitle, helper);
+
         return <head>
             <meta charset="utf-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
             {meta && meta.length ? <MetaTags meta={meta} /> : null}
 
-            <title>{getPageTitle(page, config.title, config.subtitle, helper)}</title>
+            <title>{title}</title>
 
             <WebApp.Cacheable
                 helper={helper}
@@ -167,7 +169,7 @@ module.exports = class extends Component {
 
             {adsenseClientId ? <script data-ad-client={adsenseClientId}
                 src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" async></script> : null}
-            {!helper.is_post() ? <h1 style="display: none">{page.title || config.title}</h1> : null}
+            {!helper.is_post() ? <h1 style="display: none">{title}</h1> : null}
         </head>;
     }
 };
